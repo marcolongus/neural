@@ -1,4 +1,6 @@
 # Trabajo Práctico 3. 
-# Clasificación y backpropagation. 
+# Clasificación y backpropagation.
+# Usamos torch
+
 
 
