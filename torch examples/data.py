@@ -19,21 +19,21 @@ test = datasets.MNIST(
     transform=transforms.Compose([transforms.ToTensor()]),
 )
 
-# Data resume
-print("DATA RESUME:\n")
-print(train)
-print(test)
-print()
+# Load data into tensor, and shuffle
+trainset = torch.utils.data.DataLoader(train, batch_size=10, shuffle=True)
+testset = torch.utils.data.DataLoader(test, batch_size=10, shuffle=True)
 
-# Load data into tensor
-trainset = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
-testset = torch.utils.data.DataLoader(test, batch_size=2, shuffle=True)
+if __name__ == "__main__":
+    # Data resume
+    print("DATA RESUME:\n")
+    print(train)
+    print(test)
+    print()
 
-
-for data in trainset:
-    print(data[0][0].shape)
-    print(data[0][1].shape)
-    print(data[1])
-    break
+    for data in trainset:
+        print(data[0][0].shape)
+        print(data[0][1].shape)
+        print(data[1])
+        break
 
 
