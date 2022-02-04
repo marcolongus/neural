@@ -31,9 +31,11 @@ if __name__ == "__main__":
     print()
 
     for data in trainset:
-        print(data[0][0].shape)
-        print(data[0][1].shape)
-        print(data[1])
+        images, target = data
+        for i, image in enumerate(images):
+            plt.title(target[i])
+            plt.imshow(image.view(28,28))
+            plt.show()
         break
 
 

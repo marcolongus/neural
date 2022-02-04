@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class Net(nn.Module):
+    ''' Fully connected neural network fc '''
     def __init__(self):
         super(Net, self).__init__()  
         self.fc1 = nn.Linear(28*28, 64)
@@ -16,11 +17,5 @@ class Net(nn.Module):
         x = F.relu(self.fc3(x))
         x = self.fc4(x)
         return F.log_softmax(x, dim=1)
-
-
-
-
-
-
 
 
