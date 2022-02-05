@@ -1,7 +1,10 @@
 import torch.optim as optim
-from tqdm import trange
 from data import *
 from convolution import *
+
+print(torch.cuda.is_available())
+device = torch.device("cuda:0")
+print(device)
 
 # Load data
 training_data = np.load("training_data.npy", allow_pickle=True)
@@ -15,7 +18,9 @@ image = (
     torch.tensor(np.array([image[0] for image in training_data])).view(-1, 50, 50)
     / 255.0
 )
-target = torch.tensor(np.array([image[1] for image in training_data]), dtype=torch.float32)
+target = torch.tensor(
+    np.array([image[1] for image in training_data]), dtype=torch.float32
+)
 
 
 # Validation test size 10 % of data
@@ -35,19 +40,36 @@ print(test_image.shape)
 print(train_image.shape)
 
 BATCH_SIZE = 100
-EPOCHS = 1
+EPOCHS = 3
 
 for epoch in range(EPOCHS):
-    for i in tqdm(range(0, len(train_image), BATCH_SIZE)):
-        batch_image = train_image[i : i + BATCH_SIZE].view(-1, 1, 50, 50)
-        batch_target = train_target[i : i + BATCH_SIZE]
+	print(f'EPOCH:{epoch}')
+	for i in range(0, len(train_image), BATCH_SIZE):
+		batch_image = train_image[i : i + BATCH_SIZE].view(-1, 1, 50, 50)
+		batch_target = train_target[i : i + BATCH_SIZE]
+		net.zero_grad()
+		outputs = net(batch_image)
+		loss = loss_function(outputs, batch_target)
+		loss.backward()
+		optimizer.step()
 
-        # Zero gradient
-        net.zero_grad()
-        outputs = net(batch_image)
-        loss = loss_function(outputs, batch_target)
-        loss.backward()
-        optimizer.step()
 
+print("LOSS:", loss, "\n")
 
-print("LOSS:", loss)
+correct = 0
+total = 0
+
+with torch.no_grad():
+    for i in range(len(test_image)):
+        real_class = torch.argmax(test_target[i])
+        net_out = net(test_image[i].view(-1, 1, 50, 50))
+        predicted_class = torch.argmax(net_out)
+        if i < 10:
+        	plt.title(f"Class: {real_class}, Prediction {predicted_class}")
+        	plt.imshow(test_image[i])
+        	plt.show()
+        if predicted_class == real_class:
+            correct += 1
+        total += 1
+
+print("Accuracy:", round(correct / total, 3))
