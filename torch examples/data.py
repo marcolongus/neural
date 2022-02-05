@@ -45,8 +45,9 @@ if REBUILD_DATA == True:
 	data = Data()
 	data.make_training_data()
 
+# How to load the data
 if __name__ == '__main__':
 	training_data = np.load("training_data.npy", allow_pickle=True)
 	print(training_data[1])
-	plt.imshow(training_data[11][0], cmap='gray')
+	plt.imshow(training_data[1][0], cmap='gray')
 	plt.show()
