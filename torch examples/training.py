@@ -1,26 +1,27 @@
 import torch.optim as optim
 from data import *
 from convolution import *
-
-print(torch.cuda.is_available())
-device = torch.device("cuda:0")
-print(device)
+import os
 
 # Load data
 training_data = np.load("training_data.npy", allow_pickle=True)
 
 # Init CNN
-net = Convolution()
+net = Convolution().to(device)
 optimizer = optim.Adam(net.parameters(), lr=0.001)
 loss_function = nn.MSELoss()
 
 image = (
-    torch.tensor(np.array([image[0] for image in training_data])).view(-1, 50, 50)
+    torch.tensor([image[0] for image in training_data], dtype=torch.float32, device=device).view(-1, 50, 50)
     / 255.0
 )
 target = torch.tensor(
-    np.array([image[1] for image in training_data]), dtype=torch.float32
+    [image[1] for image in training_data], dtype=torch.float32, device=device
 )
+
+print(type(target))
+print(target.shape)
+
 
 
 # Validation test size 10 % of data
@@ -40,7 +41,7 @@ print(test_image.shape)
 print(train_image.shape)
 
 BATCH_SIZE = 100
-EPOCHS = 3
+EPOCHS = 10
 
 for epoch in range(EPOCHS):
 	print(f'EPOCH:{epoch}')
@@ -65,9 +66,10 @@ with torch.no_grad():
         net_out = net(test_image[i].view(-1, 1, 50, 50))
         predicted_class = torch.argmax(net_out)
         if i < 10:
-        	plt.title(f"Class: {real_class}, Prediction {predicted_class}")
-        	plt.imshow(test_image[i])
-        	plt.show()
+        	...
+        	#plt.title(f"Class: {real_class}, Prediction {predicted_class}")
+        	#plt.imshow(test_image[i].to("cpu"))
+        	#plt.show()
         if predicted_class == real_class:
             correct += 1
         total += 1
