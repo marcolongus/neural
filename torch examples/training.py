@@ -2,10 +2,6 @@ import torch.optim as optim
 from data import *
 from convolution import *
 
-print(torch.cuda.is_available())
-device = torch.device("cuda:0")
-print(device)
-
 # Load data
 training_data = np.load("training_data.npy", allow_pickle=True)
 
@@ -35,12 +31,8 @@ train_target = target[:-val_size]
 test_image = image[-val_size:]
 test_target = target[-val_size:]
 
-
-print(test_image.shape)
-print(train_image.shape)
-
 BATCH_SIZE = 100
-EPOCHS = 3
+EPOCHS = 2
 
 for epoch in range(EPOCHS):
 	print(f'EPOCH:{epoch}')
@@ -52,9 +44,7 @@ for epoch in range(EPOCHS):
 		loss = loss_function(outputs, batch_target)
 		loss.backward()
 		optimizer.step()
-
-
-print("LOSS:", loss, "\n")
+	print("LOSS:", loss, "\n")
 
 correct = 0
 total = 0
@@ -65,9 +55,10 @@ with torch.no_grad():
         net_out = net(test_image[i].view(-1, 1, 50, 50))
         predicted_class = torch.argmax(net_out)
         if i < 10:
-        	plt.title(f"Class: {real_class}, Prediction {predicted_class}")
-        	plt.imshow(test_image[i])
-        	plt.show()
+        	...
+        	#plt.title(f"Class: {real_class}, Prediction {predicted_class}")
+        	#plt.imshow(test_image[i])
+        	#plt.show()
         if predicted_class == real_class:
             correct += 1
         total += 1
