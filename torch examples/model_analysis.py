@@ -24,12 +24,12 @@ VAL_PCT = 0.1
 val_size = int(len(image) * VAL_PCT)
 print(f"Validation test size:{val_size}")
 
-BATCH_SIZE = 400
-EPOCHS = 20
+BATCH_SIZE = 200
+EPOCHS = 5
 
 MODEL_NAME = f"model-{int(time.time())}"
 
-def fwd_pass(image=image, target=target, train=False):
+def fwd_pass(image, target, train=False):
     if train:
         net.zero_grad()
     outputs = net(image)
@@ -37,6 +37,7 @@ def fwd_pass(image=image, target=target, train=False):
     try:
         accuracy = matches.count(True) / (len(matches) )
     except:
+        print('Exception')
         accuracy = 0
     loss = loss_function(outputs, target)
 
@@ -62,6 +63,7 @@ def test_model(size):
 
 
 def train_model():
+
     train_image = image[:-val_size]
     train_target = target[:-val_size]
 
@@ -72,9 +74,11 @@ def train_model():
 
             acc, loss = fwd_pass(batch_image, batch_target, train=True)
             if i % 50 == 0:
-                val_acc, val_loss = test_model(size=100)
+                val_acc, val_loss = test_model(size=200)
+                '''
                 print(
                     f"{MODEL_NAME}, {round(time.time(),3)}, {round(float(acc),2)}, {round(float(loss),4)}, {round(float(val_acc),2)}, {round(float(val_loss),4)}"
                 )
+                '''
 
 train_model()
