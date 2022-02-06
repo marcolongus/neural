@@ -24,7 +24,7 @@ val_size = int(len(image) * VAL_PCT)
 print(f"Validation test size:{val_size}")
 
 BATCH_SIZE = 400
-EPOCHS = 15
+EPOCHS = 20
 
 def train(net):
 	train_image = image[:-val_size]
@@ -55,9 +55,9 @@ def test(net):
 	        predicted_class = torch.argmax(net_out)
 	        if i < 10:
 	        	...
-	        	#plt.title(f"Class: {real_class}, Prediction {predicted_class}")
-	        	#plt.imshow(test_image[i].to("cpu"))
-	        	#plt.show()
+	        	plt.title(f"Class: {real_class}, Prediction {predicted_class}")
+	        	plt.imshow(test_image[i].to("cpu"))
+	        	plt.show()
 	        if predicted_class == real_class:
 	            correct += 1
 	        total += 1
