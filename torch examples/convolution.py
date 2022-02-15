@@ -32,8 +32,6 @@ class Convolution(nn.Module):
         x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
 
-        # print(x[0].shape)
-
         if self._to_linear is None:
             self._to_linear = x[0].shape[0] * x[0].shape[1] * x[0].shape[2]
             print("Flatten to linear:", self._to_linear)
