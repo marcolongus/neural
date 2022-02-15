@@ -26,7 +26,7 @@ print(f"Validation test size: {val_size}")
 print(f"Train test size: {len(image) - val_size}")
 
 BATCH_SIZE = 200
-EPOCHS = 30
+EPOCHS = 2
 
 MODEL_NAME = f"model-{int(time.time())}"
 
@@ -82,7 +82,5 @@ def train_model():
                         f"{MODEL_NAME}, {epoch}, {round(time.time(),3)}, {round(float(acc),2)}, {round(float(loss),4)}, {round(float(val_acc),4)}, {round(float(val_loss),4)}\n"
                     )
                 
-
-
 
 train_model()
